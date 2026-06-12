@@ -24,7 +24,10 @@ class Item:
         self.popularity_rating = popularity_rating
 
     def __repr__(self):
-        pass  # TODO: readable representation for debugging
+        return (
+            f"Item(name={self.name!r}, price={self.price}, "
+            f"category={self.category!r}, popularity_rating={self.popularity_rating})"
+        )
 
 
 class Menu:
@@ -34,13 +37,20 @@ class Menu:
         self.items = []
 
     def add_item(self, item):
-        pass  # TODO: add an Item to the menu
+        self.items.append(item)
 
     def filter_by_category(self, category):
-        pass  # TODO: return the items matching the given category
+        return [item for item in self.items if item.category == category]
+
+    def sort_by_popularity(self, descending=True):
+        return sorted(
+            self.items,
+            key=lambda item: item.popularity_rating,
+            reverse=descending,
+        )
 
     def get_all_items(self):
-        pass  # TODO: return the full list of items
+        return self.items
 
 
 class Order:
@@ -51,16 +61,17 @@ class Order:
         self.total = 0.0
 
     def add_item(self, item):
-        pass  # TODO: add an Item to this order
+        self.items.append(item)
 
     def remove_item(self, item):
-        pass  # TODO: remove an Item from this order
+        self.items.remove(item)
 
     def compute_total(self):
-        pass  # TODO: sum item prices, store in self.total, and return it
+        self.total = sum(item.price for item in self.items)
+        return self.total
 
     def get_items(self):
-        pass  # TODO: return the selected items
+        return self.items
 
 
 class Customer:
@@ -71,7 +82,8 @@ class Customer:
         self.purchase_history = []
 
     def add_purchase(self, order):
-        pass  # TODO: append a completed Order to purchase_history
+        self.purchase_history.append(order)
 
     def is_verified(self):
-        pass  # TODO: return whether the customer has prior purchase history
+        return len(self.purchase_history) > 0
+    
